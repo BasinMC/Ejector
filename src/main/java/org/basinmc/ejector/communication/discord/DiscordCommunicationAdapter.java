@@ -29,7 +29,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.security.auth.login.LoginException;
@@ -149,7 +148,7 @@ public class DiscordCommunicationAdapter implements CommunicationAdapter, Initia
       messageSource.setCacheMillis(0);
     }
 
-    this.messageSource = new PreconfiguredMessageSource(Locale.getDefault());
+    this.messageSource = new PreconfiguredMessageSource();
     this.messageSource.setParentMessageSource(messageSource);
 
     this.client = new JDABuilder(AccountType.BOT)

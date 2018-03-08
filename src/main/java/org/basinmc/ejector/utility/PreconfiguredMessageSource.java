@@ -31,6 +31,10 @@ public class PreconfiguredMessageSource extends DelegatingMessageSource {
 
   private final Locale locale;
 
+  public PreconfiguredMessageSource() {
+    this(Locale.getDefault());
+  }
+
   public PreconfiguredMessageSource(@NonNull Locale locale) {
     this.locale = locale;
   }
