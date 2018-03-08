@@ -30,8 +30,7 @@ public class DiscordConfiguration {
 
   private boolean enabled;
   private String token;
-  private String guildId;
-  private final Set<Long> channels = new HashSet<>();
+  private final Set<Channel> channels = new HashSet<>();
 
   public boolean isEnabled() {
     return this.enabled;
@@ -50,18 +49,34 @@ public class DiscordConfiguration {
     this.token = token;
   }
 
-  @Nullable
-  public String getGuildId() {
-    return this.guildId;
-  }
-
-  public void setGuildId(@Nullable String guildId) {
-    this.guildId = guildId;
-  }
-
   @NonNull
   @SuppressWarnings("AssignmentOrReturnOfFieldWithMutableType") // required for configuration
-  public Set<Long> getChannels() {
+  public Set<Channel> getChannels() {
     return this.channels;
+  }
+
+  /**
+   * Represents a single channel.
+   */
+  public static class Channel extends AbstractChannelEntry {
+
+    private long guildId;
+    private long channelId;
+
+    public long getGuildId() {
+      return this.guildId;
+    }
+
+    public void setGuildId(long guildId) {
+      this.guildId = guildId;
+    }
+
+    public long getChannelId() {
+      return this.channelId;
+    }
+
+    public void setChannelId(long channelId) {
+      this.channelId = channelId;
+    }
   }
 }

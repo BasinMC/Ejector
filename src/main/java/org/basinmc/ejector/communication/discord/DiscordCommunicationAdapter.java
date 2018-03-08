@@ -40,8 +40,6 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.basinmc.ejector.communication.CommunicationAdapter;
 import org.basinmc.ejector.communication.Message;
 import org.basinmc.ejector.configuration.DiscordConfiguration;
@@ -104,7 +102,6 @@ public class DiscordCommunicationAdapter implements CommunicationAdapter, Initia
   private final PreconfiguredMessageSource messageSource;
 
   private final JDA client;
-  private final Guild guild;
 
   static {
     // Payload Type Colors
@@ -158,7 +155,6 @@ public class DiscordCommunicationAdapter implements CommunicationAdapter, Initia
     this.client = new JDABuilder(AccountType.BOT)
         .setToken(configuration.getToken())
         .buildBlocking();
-    this.guild = this.client.getGuildById(configuration.getGuildId());
 
     // Payload Handlers
     for (PayloadType type : PayloadType.values()) {
@@ -827,7 +823,15 @@ public class DiscordCommunicationAdapter implements CommunicationAdapter, Initia
 
     builder.build(message, embed, event);
     message.setEmbed(embed.build());
-    this.sendMessage(message.build());
+
+    this.configuration.getChannels().stream()
+        .filter((c) -> c.isReceivingEvent(payload.getType()))
+        .forEach((c) -> {
+          this.client.getGuildById(c.getGuildId())
+              .getTextChannelById(c.getChannelId())
+              .sendMessage(message.build())
+              .queue();
+        });
   }
 
   /**
@@ -837,27 +841,9 @@ public class DiscordCommunicationAdapter implements CommunicationAdapter, Initia
    */
   public void sendMessage(@NonNull String message) {
     this.configuration.getChannels()
-        .forEach((c) -> this.guild.getTextChannelById(c).sendMessage(message).queue());
-  }
-
-  /**
-   * Sends a message to all configured channels.
-   *
-   * @param message a message.
-   */
-  public void sendMessage(@NonNull net.dv8tion.jda.core.entities.Message message) {
-    this.configuration.getChannels()
-        .forEach((c) -> this.guild.getTextChannelById(c).sendMessage(message).queue());
-  }
-
-  /**
-   * Sends an embed message to all configured channels.
-   *
-   * @param embed a message.
-   */
-  public void sendMessage(@NonNull MessageEmbed embed) {
-    this.configuration.getChannels()
-        .forEach((c) -> this.guild.getTextChannelById(c).sendMessage(embed).queue());
+        .forEach(
+            (c) -> this.client.getGuildById(c.getGuildId()).getTextChannelById(c.getChannelId())
+                .sendMessage(message).queue());
   }
 
   /**
