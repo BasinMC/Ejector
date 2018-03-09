@@ -36,6 +36,7 @@ public class IrcServer implements Configuration {
   private String hostname;
   private int port = 6667;
   private boolean secure;
+  private String password;
   private final Set<IrcChannel> channels = new HashSet<>();
 
   private String channelPrefixes;
@@ -83,6 +84,11 @@ public class IrcServer implements Configuration {
 
   public void setSecure(boolean secure) {
     this.secure = secure;
+  }
+
+  @NonNull
+  public Optional<String> getPassword() {
+    return Optional.ofNullable(this.password);
   }
 
   @NonNull
