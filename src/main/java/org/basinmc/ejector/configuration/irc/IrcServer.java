@@ -91,6 +91,10 @@ public class IrcServer implements Configuration {
     return Optional.ofNullable(this.password);
   }
 
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
   @NonNull
   @SuppressWarnings("AssignmentOrReturnOfFieldWithMutableType")
   public Set<IrcChannel> getChannels() {
