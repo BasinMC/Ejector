@@ -30,7 +30,7 @@ import java.util.Optional;
 public interface Configuration {
 
   /**
-   * Retrieves a list of valid channel prefixes (typically # and & for global and local channels
+   * Retrieves a list of valid channel prefixes (typically # and &amp; for global and local channels
    * respectively).
    *
    * @return a list of channel prefix characters.
