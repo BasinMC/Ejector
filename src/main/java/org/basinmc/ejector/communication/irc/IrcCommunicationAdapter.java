@@ -618,6 +618,7 @@ public class IrcCommunicationAdapter implements CommunicationAdapter, Initializi
 
     return new Configuration.Builder()
         .addServer(server.getHostname(), server.getPort())
+        .setServerPassword(server.getPassword().orElse(null))
         .setSocketFactory(
             server.isSecure() ? SSLSocketFactory.getDefault() : SocketFactory.getDefault())
         .addAutoJoinChannels(
