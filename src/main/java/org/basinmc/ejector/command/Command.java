@@ -20,6 +20,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.List;
 import java.util.Set;
 import org.basinmc.ejector.command.error.CommandException;
+import org.basinmc.ejector.command.error.CommandParameterException;
 import org.basinmc.ejector.communication.Message;
 
 /**
@@ -35,6 +36,9 @@ public interface Command {
    * @param context a command context.
    * @param commandName a command name.
    * @param arguments a list of arguments.
+   * @throws CommandParameterException when the supplied parameters are outside of their expected
+   * bounds.
+   * @throws CommandException when the command execution itself fails.
    */
   void execute(@NonNull Context context, @NonNull String commandName,
       @NonNull List<String> arguments) throws CommandException;
